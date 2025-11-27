@@ -1,0 +1,35 @@
+---
+const navItems = [
+  { href: '#hero', label: 'Overview' },
+  { href: '#latest', label: 'Dispatches' },
+  { href: '#topics', label: 'Topics' },
+  { href: '#posts', label: 'All Posts' },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-white/10 bg-ink/80 backdrop-blur-lg">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 lg:px-6">
+    <a class="flex items-center gap-3 text-lg font-semibold text-white" href="/">
+      <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-lime-300 to-emerald-500 text-ink">
+        MF
+      </span>
+      Mister Funable Field Notes
+    </a>
+    <nav class="hidden items-center gap-6 lg:flex">
+      {navItems.map((item) => (
+        <a class="nav-link" href={item.href}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+    <a
+      class="hidden rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/20 lg:inline-flex"
+      href="https://github.com/MisterFunable/blog"
+      target="_blank"
+      rel="noreferrer"
+    >
+      GitHub
+    </a>
+  </div>
+</header>
+

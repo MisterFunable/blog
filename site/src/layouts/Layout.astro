@@ -1,0 +1,42 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = 'Mister Funable Field Notes',
+  description = 'Creative experiments, automation tinkering, and collection logs from Mister Funable.',
+  ogImage = '/medium-assets/04/img-01.png',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="h-full bg-ink">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="twitter:card" content="summary_large_image" />
+  </head>
+  <body class="min-h-screen bg-ink text-slate-100 selection:bg-lime-300/60 selection:text-ink">
+    <div id="page">
+      <slot />
+    </div>
+  </body>
+</html>

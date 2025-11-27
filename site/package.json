@@ -1,0 +1,19 @@
+{
+  "name": "site",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "sync:posts": "node scripts/syncPosts.mjs",
+    "dev": "npm run sync:posts && astro dev",
+    "build": "astro build",
+    "prebuild": "npm run sync:posts",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.17",
+    "astro": "^5.16.1",
+    "tailwindcss": "^4.1.17"
+  }
+}

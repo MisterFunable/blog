@@ -1,0 +1,85 @@
+---
+import type { PostSummary } from '../data/posts';
+import { formatDate } from '../utils/formatDate';
+
+interface Props {
+  post: PostSummary;
+  featured?: boolean;
+}
+
+const { post, featured = false } = Astro.props;
+const dateLabel = formatDate(post.publishedAt);
+const readingLabel = `${post.readingTime} min read`;
+const layoutClasses = featured
+  ? 'grid grid-cols-1 gap-6 p-8 lg:grid-cols-[3fr_2fr]'
+  : 'flex flex-col p-6';
+---
+
+<article class={`post-card glass-card ${layoutClasses}`}>
+  <a
+    class="post-card__overlay"
+    href={`/posts/${post.permalink}`}
+    aria-label={`Read ${post.title}`}
+  >
+    <span class="sr-only">Read post</span>
+  </a>
+  <a
+    class="medium-link"
+    href={post.sourceUrl}
+    target="_blank"
+    rel="noreferrer"
+    aria-label="View original on Medium"
+  >
+    <svg viewBox="0 0 1043.63 592.71" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+      <path
+        d="M588.67 296.4c0 163.65-131.11 296.4-293.88 296.4S1 460.05 1 296.4 132.11 0 294.79 0s293.88 132.75 293.88 296.4Z"
+        fill="currentColor"
+      />
+      <path
+        d="M825.14 296.4c0 154.89-65.56 280.61-146.45 280.61s-146.45-125.72-146.45-280.61S597.8 15.79 678.69 15.79 825.14 141.51 825.14 296.4Z"
+        fill="currentColor"
+      />
+      <path
+        d="M1043.63 296.4c0 137.75-24.53 249.47-54.79 249.47-30.27 0-54.8-111.72-54.8-249.47s24.53-249.47 54.8-249.47 54.79 111.72 54.79 249.47Z"
+        fill="currentColor"
+      />
+    </svg>
+  </a>
+  <div class={`space-y-4 ${featured ? 'order-2 lg:order-1' : ''}`}>
+    <div class="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.2em] text-lime-200/80">
+      <span>{dateLabel}</span>
+      <span class="text-slate-500">•</span>
+      <span>{readingLabel}</span>
+    </div>
+    <h3 class={`font-semibold text-white ${featured ? 'text-3xl' : 'text-2xl'}`}>
+      <a
+        class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-300"
+        href={`/posts/${post.permalink}`}
+      >
+        {post.title}
+      </a>
+    </h3>
+    <p class="text-base text-slate-300">
+      {post.description}
+    </p>
+  </div>
+  <div class={`${featured ? 'order-1 lg:order-2' : ''}`}>
+    {post.heroImage ? (
+      <img
+        src={post.heroImage}
+        alt={post.title}
+        loading="lazy"
+        decoding="async"
+        class={`h-full w-full rounded-2xl object-cover ${featured ? 'max-h-[320px]' : 'max-h-60'}`}
+      />
+    ) : (
+      <div class="flex h-full min-h-[240px] w-full items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400/30 to-indigo-500/20">
+        <span class="text-sm uppercase tracking-[0.3em] text-white/70">Mister Funable</span>
+      </div>
+    )}
+  </div>
+  <div class="read-indicator" aria-hidden="true">
+    <span data-text="READ POST">READ POST</span>
+  </div>
+</article>
+

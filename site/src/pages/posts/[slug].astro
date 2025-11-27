@@ -1,0 +1,66 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../../utils/formatDate';
+
+interface Props {
+  entry: CollectionEntry<'posts'>;
+}
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((entry) => ({
+    params: { slug: entry.data.permalink },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props as Props;
+const { Content, headings } = await entry.render();
+const { title, description, heroImage, publishedAt, readingTime, sourceUrl } = entry.data;
+---
+
+<Layout title={`${title} — Mister Funable Field Notes`} description={description} ogImage={heroImage ?? undefined}>
+  <article class="mx-auto max-w-4xl px-4 py-16 text-slate-200 lg:px-0">
+    <a class="text-sm text-lime-200 hover:text-white" href="/">← Back home</a>
+    <header class="mt-6 space-y-4">
+      <p class="text-xs font-semibold uppercase tracking-[0.4em] text-lime-200/80">
+        {formatDate(publishedAt)} • {readingTime} min read
+      </p>
+      <h1 class="text-4xl font-semibold text-white">{title}</h1>
+      <p class="text-lg text-slate-300">{description}</p>
+      <div class="flex flex-wrap gap-4 text-sm text-slate-400">
+        <a class="underline-offset-4 hover:underline" href={sourceUrl} target="_blank" rel="noreferrer">
+          View original on Medium
+        </a>
+      </div>
+    </header>
+    {heroImage && (
+      <div class="mt-8 overflow-hidden rounded-3xl">
+        <img src={heroImage} alt={title} class="h-full w-full object-cover" loading="eager" />
+      </div>
+    )}
+    {headings.length > 2 && (
+      <aside class="mt-10 rounded-2xl border border-white/10 bg-white/5 p-6 text-sm text-slate-300">
+        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-lime-200/80">On this page</p>
+        <ul class="mt-4 space-y-2">
+          {headings.map((heading) => {
+            const indentClass = heading.depth > 2 ? 'ml-4' : '';
+            return (
+              <li class={indentClass}>
+                <a class="text-slate-300 transition hover:text-white" href={`#${heading.slug}`}>
+                  {heading.text}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </aside>
+    )}
+    <div class="richtext mt-10">
+      <Content />
+    </div>
+  </article>
+</Layout>
+
